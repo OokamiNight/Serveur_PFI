@@ -17,7 +17,7 @@ function makeToken(text){
 
 const utilities = require('./utilities');
 const serverVariables = require("./serverVariables");
-const Repository = require('./models/Repository');
+const Repository = require('./models/repository');
 let repository = new Repository('Tokens');
 
 let tokenLifeDuration = serverVariables.get("main.token.lifeDuration");
