@@ -89,13 +89,13 @@ const server = require('http').createServer(async (req, res) => {
     ////////////////////////////////////////////////////////////////////////
     // Middlewares pipeline
 
-    if (!CORS_Prefligth(req, res))
-        if (!cached_Endpoint(req, res))
-            if (!(await token_Endpoint(req, res)))
-                if (!(await registered_Enpoint(req, res)))
-                    if (!(await API_Endpoint(req, res)))
-                        if (!Static_Ressource_Request(req, res))
-                            responseNotFound(res);
+    if (!Static_Ressource_Request(req, res))
+        if (!CORS_Prefligth(req, res))
+            if (!cached_Endpoint(req, res))
+                if (!(await token_Endpoint(req, res)))
+                    if (!(await registered_Enpoint(req, res)))
+                        if (!(await API_Endpoint(req, res)))
+                                responseNotFound(res);
 
     ////////////////////////////////////////////////////////////////////////   
 
