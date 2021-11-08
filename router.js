@@ -149,85 +149,92 @@ exports.dispatch_Registered_EndPoint = function (req, res) {
 /////////////////////////////////////////////////////////////////////
 exports.dispatch_API_EndPoint = function (req, res) {
     return new Promise(async (resolve) => {
+        let exit = false;
         if (req.url == "/api") {
             const Endpoints = require('./endpoints');
             Endpoints.list(res);
             // request consumed
             resolve(true);
+            exit = true;
         }
 
-        let path = utilities.decomposePath(req.url);
+        if (!exit) {
+            let path = utilities.decomposePath(req.url);
 
-        if (!path.isAPI)
-            resolve(false);
+            if (!path.isAPI) {
+                resolve(false);
+            } else {
 
-        let controllerName = makeControllerName(path.model);
-        let id = path.id;
+                let controllerName = makeControllerName(path.model);
+                let id = path.id;
 
-        if (controllerName != undefined) {
-            let response = new Response(res);
-            try {
-                // dynamically import the targeted controller
-                // if the controllerName does not exist the catch section will be called
-                const Controller = require('./controllers/' + controllerName);
-                // instanciate the controller       
-                let controller = new Controller(req, res, path.params);
+                if (controllerName != undefined) {
+                    let response = new Response(res);
+                    try {
+                        // dynamically import the targeted controller
+                        // if the controllerName does not exist the catch section will be called
+                        const Controller = require('./controllers/' + controllerName);
+                        // instanciate the controller       
+                        let controller = new Controller(req, res, path.params);
 
-                if (!controller.requestAuthorized()) {
-                    console.log('unauthorized access!');
-                    response.unAuthorized();
-                    resolve(true);
-                }
-                if (req.method === 'HEAD') {
-                    controller.head();
-                    // request consumed
-                    resolve(true);
-                }
-                if (req.method === 'GET') {
-                    controller.get(id);
-                    // request consumed
-                    resolve(true);
-                }
-                if (req.method === 'POST') {
-                    if (isJSONContent(req, res)) {
-                        let JSONBody = await getJSONBody(req);
-                        controller.post(JSONBody);
+                        if (!controller.requestAuthorized()) {
+                            console.log('unauthorized access!');
+                            response.unAuthorized();
+                            resolve(true);
+                        }
+                        if (req.method === 'HEAD') {
+                            controller.head();
+                            // request consumed
+                            resolve(true);
+                        }
+                        if (req.method === 'GET') {
+                            controller.get(id);
+                            // request consumed
+                            resolve(true);
+                        }
+                        if (req.method === 'POST') {
+                            if (isJSONContent(req, res)) {
+                                let JSONBody = await getJSONBody(req);
+                                controller.post(JSONBody);
+                            }
+                            // request consumed
+                            resolve(true);
+                        }
+                        if (req.method === 'PUT') {
+                            if (isJSONContent(req, res)) {
+                                let JSONBody = await getJSONBody(req);
+                                controller.put(JSONBody);
+                            }
+                            // request consumed
+                            resolve(true);
+                        }
+                        if (req.method === 'PATCH') {
+                            processJSONBody(req, res, controller, "patch");
+                            // request consumed
+                            resolve(true);
+                        }
+                        if (req.method === 'DELETE') {
+                            controller.remove(id);
+                            // request consumed
+                            resolve(true);
+                        }
+                    } catch (error) {
+                        // catch likely called because of missing controller class
+                        // i.e. require('./' + controllerName) failed
+                        // but also any unhandled error...
+                        console.log('endpoint not found');
+                        console.log(error);
+                        response.notFound();
+                        // request consumed
+                        resolve(true);
                     }
-                    // request consumed
-                    resolve(true);
+                } else {
+                    // not an API endpoint
+                    // request not consumed
+                    // must be handled by another middleware
+                    resolve(false);
                 }
-                if (req.method === 'PUT') {
-                    if (isJSONContent(req, res)) {
-                        let JSONBody = await getJSONBody(req);
-                        controller.put(JSONBody);
-                    }
-                    // request consumed
-                    resolve(true);
-                }
-                if (req.method === 'PATCH') {
-                    processJSONBody(req, res, controller, "patch");
-                    // request consumed
-                    resolve(true);
-                }
-                if (req.method === 'DELETE') {
-                    controller.remove(id);
-                    // request consumed
-                    resolve(true);
-                }
-            } catch (error) {
-                // catch likely called because of missing controller class
-                // i.e. require('./' + controllerName) failed
-                // but also any unhandled error...
-                console.log('endpoint not found');
-                console.log(error);
-                response.notFound();
-                // request consumed
-                resolve(true);
             }
         }
-        // not an API endpoint
-        // request not consumed
-        // must be handled by another middleware
-        resolve(false);
     });
 }
