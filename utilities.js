@@ -25,6 +25,11 @@ function getQueryString(url){
         return url.substring(url.indexOf('?'),url.length);
     return undefined;
 }
+exports.secondsToDateString = secondsToDateString;
+function secondsToDateString(dateInSeconds, localizationId = 'fr-FR') {
+    const hoursOptions = {weekday: 'long',year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric', second:'numeric'};
+    return new Date(dateInSeconds * 1000).toLocaleDateString(localizationId, hoursOptions);
+}
 // this function decompose url path
 // either
 // MVC pattern /controller/action/id?querystring

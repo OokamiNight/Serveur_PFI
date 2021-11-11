@@ -107,7 +107,10 @@ class Repository {
     get(id){
         for(let object of this.objects()){
             if (object.Id === id) {
-               return object;
+                if (this.bindExtraDataMethod != null)
+                    return this.bindExtraDataMethod(object);
+                else
+                    return object;
             }
         }
         return null;

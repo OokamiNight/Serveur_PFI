@@ -1,4 +1,5 @@
-const usersRepository = require('../models/repository');
+const usersRepository = require('../models/usersRepository');
+const ImagesRepository = require('../models/imagesRepository');
 const TokenManager = require('../tokenManager');
 const utilities = require("../utilities");
 const User = require('../models/user');
@@ -7,8 +8,8 @@ const Cache = require('../getRequestsCacheManager');
 module.exports = 
 class AccountsController extends require('./Controller') {
     constructor(req, res){
-        super(req, res, null, false);
-        this.usersRepository = new usersRepository("Users", true);
+        super(req, res);
+        this.usersRepository = new usersRepository(this.req);
     }
 
     // list of users with masked password
@@ -47,7 +48,6 @@ class AccountsController extends require('./Controller') {
 
     logout(user) {
         if (this.requestActionAuthorized()) {
-            console.log("User ", user.Name, "logged out");
             TokenManager.logout(user.Id);
             this.response.accepted();
         }
@@ -98,5 +98,44 @@ class AccountsController extends require('./Controller') {
             }
         } else
             this.response.unAuthorized();
+    }
+    deleteAllUsersBookmarks(userId){
+        let bookmarksRepository = new Repository('Bookmarks', true);
+        let bookmarks = bookmarksRepository.getAll();
+        let indexToDelete = [];
+        let index = 0;
+        for(let bookmark of bookmarks) {
+            if (bookmark.UserId == userId)
+                indexToDelete.push(index);
+            index ++;
+        }
+        bookmarksRepository.removeByIndex(indexToDelete);
+        Cache.clear('bookmarks');
+    }
+    deleteAllUsersImages(userId){
+        let imagesRepository = new ImagesRepository(this.req, true);
+        let images = imagesRepository.getAll();
+        let indexToDelete = [];
+        let index = 0;
+        for(let image of images) {
+            if (image.UserId == userId)
+                indexToDelete.push(index);
+            index ++;
+        }
+        imagesRepository.removeByIndex(indexToDelete);
+        Cache.clear('images');
+    }
+    
+    remove(id) {
+        if (this.requestActionAuthorized()) {
+            this.deleteAllUsersBookmarks(id);
+            this.deleteAllUsersImages(id);
+            this.deleteAllUsersNewsPosts(id);
+            if (this.usersRepository.remove(id))
+                this.response.accepted();
+            else
+                this.response.notFound();
+            } else 
+        this.response.unAuthorized();
     }
 }

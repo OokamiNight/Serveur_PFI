@@ -7,24 +7,7 @@ module.exports =
             super(req, res, params);
             this.wordsRepository = new Repository('Words', true);
         }
-        queryStringParamsList() {
-            let content = "<div style=font-family:arial>";
-            content += "<h4>List of parameters in query strings:</h4>";
-            content += "<h4>? sort=key <br> return all words sorted by key values (word)";
-            content += "<h4>? sort=key,desc <br> return all words sorted by descending key values";
-            content += "<h4>? key=value <br> return the word with key value = value";
-            content += "<h4>? key=value* <br> return the word with key value that start with value";
-            content += "<h4>? key=*value* <br> return the word with key value that contains value";
-            content += "<h4>? key=*value <br> return the word with key value end with value";
-            content += "<h4>page?limit=int&offset=int <br> return limit words of page offset";
-            content += "</div>";
-            return content;
-        }
-        queryStringHelp() {
-            // expose all the possible query strings
-            this.res.writeHead(200, { 'content-type': 'text/html' });
-            this.res.end(this.queryStringParamsList());
-        }
+        
         head() {
             this.response.ETag(this.wordsRepository.ETag);
         }
