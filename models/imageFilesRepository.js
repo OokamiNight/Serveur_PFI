@@ -36,8 +36,8 @@ module.exports =
         }
         static storeImageData(previousGUID, imageDataBase64) {
             if (imageDataBase64) {
-                let formatSpecifier = "data:image/png;base64,";
-                imageDataBase64 = imageDataBase64.replace(formatSpecifier, '');
+                // Remove MIME specifier
+                imageDataBase64 = imageDataBase64.split("base64,").pop();
 
                 const resizeImg = require('resize-img');
                 const thumbnailSize = 256;
