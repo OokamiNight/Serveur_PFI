@@ -17,7 +17,7 @@ function routeConfig() {
     const RouteRegister = require('./routeRegister');
     RouteRegister.add('GET', 'accounts');
     RouteRegister.add('POST', 'accounts', 'register');
-    //RouteRegister.add('POST', 'accounts', 'logout');
+    RouteRegister.add('POST', 'accounts', 'logout');
     RouteRegister.add('PUT', 'accounts', 'change');
     //RouteRegister.add('DELETE', 'accounts', 'remove');
 }
@@ -101,7 +101,6 @@ const server = require('http').createServer(async (req, res) => {
 
     showRequestProcessTime();
     showMemoryUsage();
-    console.log('-------------------------------------------------------->');
 });
 
 const PORT = process.env.PORT || 5000;

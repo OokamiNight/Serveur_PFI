@@ -1,4 +1,4 @@
-const Repository = require('./Repository');
+const Repository = require('./repository');
 const ImageFilesRepository = require('./imageFilesRepository.js');
 const User = require('./user.js');
 const utilities = require("../utilities");
