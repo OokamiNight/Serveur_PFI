@@ -106,11 +106,11 @@ const server = require('http').createServer(async (req, res) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () =>{
      console.log("**********************************");
-     console.log("* API SERVER version 2.0         *");
+     console.log("* API SERVER version 2.11        *");
      console.log("**********************************");
      console.log("* Author: Nicolas Chourot        *");
      console.log("* Lionel-Groulx College          *");
-     console.log("* Release date: 13 novembre 2021 *");
+     console.log("* Release date: november 13 2021 *");
      console.log("**********************************");
      console.log(`HTTP Server running on port ${PORT}...`);
     });
