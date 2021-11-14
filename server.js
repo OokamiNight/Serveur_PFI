@@ -19,7 +19,7 @@ function routeConfig() {
     RouteRegister.add('POST', 'accounts', 'register');
     RouteRegister.add('POST', 'accounts', 'logout');
     RouteRegister.add('PUT', 'accounts', 'change');
-    //RouteRegister.add('DELETE', 'accounts', 'remove');
+    RouteRegister.add('DELETE', 'accounts', 'remove');
 }
 
 function responseNotFound(res) {
