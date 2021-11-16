@@ -106,7 +106,7 @@ const server = require('http').createServer(async (req, res) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () =>{
      console.log("**********************************");
-     console.log("* API SERVER  - version 2.11     *");
+     console.log("* API SERVER - version 2.11      *");
      console.log("**********************************");
      console.log("* Author: Nicolas Chourot        *");
      console.log("* Lionel-Groulx College          *");
