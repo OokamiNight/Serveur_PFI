@@ -4,6 +4,7 @@ const { v1: uuidv1 } = require('uuid');
 const utilities = require('../utilities.js');
 const CollectionFilter = require('./collectionFilter.js');
 const RepositoryCachesManager = require("./repositoryCachesManager.js");
+const getRequestCache = require('../getRequestsCacheManager');
 ///////////////////////////////////////////////////////////////////////////
 // This class provide CRUD operations on JSON objects collection text file 
 // with the assumption that each object have an Id member.
@@ -34,6 +35,8 @@ class Repository {
     newETag(){
         this.ETag = uuidv1();
         repositoryEtags[this.objectsName] = this.ETag;
+        getRequestCache.clear(this.objectsName);
+        RepositoryCachesManager.clear(this.objectsName);
     }
     objects() {
         if (this.objectsList == null) 

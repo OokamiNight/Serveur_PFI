@@ -50,6 +50,7 @@ class UsersRepository extends Repository {
                 user["Created"] = foundUser["Created"];
                 user["AvatarGUID"] = ImageFilesRepository.storeImageData(user["AvatarGUID"], user["ImageData"]);
                 delete user["ImageData"];
+                
                 return super.update(user);
             }
         }
