@@ -115,7 +115,7 @@ server.listen(PORT, () => {
     console.log("**********************************");
     console.log("* Author: Nicolas Chourot        *");
     console.log("* Lionel-Groulx College          *");
-    console.log("* Release date: november 13 2021 *");
+    console.log("* Release date: november 19 2021 *");
     console.log("**********************************");
     console.log(`HTTP Server running on port ${PORT}...`);
     if (Hide_HEAD_Request)
