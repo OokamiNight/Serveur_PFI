@@ -119,7 +119,7 @@ server.listen(PORT, () => {
     console.log("**********************************");
     console.log(`HTTP Server running on port ${PORT}...`);
     if (Hide_HEAD_Request)
-     console.log("Warning! HEAD requests are hidden.")
+        console.log("Warning! HEAD requests are hidden.")
 });
 showMemoryUsage();
 
