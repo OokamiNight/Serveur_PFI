@@ -7,7 +7,6 @@ class ImagesController extends require('./Controller') {
     }
    
     head() {
-        console.log("ETag: " + this.imagesRepository.ETag);
         this.response.JSON(null, this.imagesRepository.ETag);
     }
     get(id){

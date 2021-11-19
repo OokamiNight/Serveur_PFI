@@ -1,7 +1,8 @@
+
+const Hide_HEAD_Request = true;
 function ShowRequestInfo(req) {
+    console.log('<-------------------------', getTime(), '-------------------------');
     console.log(`Request --> [${req.method}::${req.url}]`);
-    if (req.headers["content-type"] != undefined)
-        console.log(`Content-type:${req.headers["content-type"]}`);
 }
 
 function API_Endpoint(req, res) {
@@ -46,7 +47,7 @@ function AccessControlConfig(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
-    res.setHeader('Access-Control-Expose-Headers', '*'); 
+    res.setHeader('Access-Control-Expose-Headers', '*');
 }
 function CORS_Prefligth(req, res) {
     if (req.method === 'OPTIONS') {
@@ -77,13 +78,22 @@ function Static_Ressource_Request(req, res) {
     const staticRessourcesServer = require('./staticRessourcesServer.js');
     return staticRessourcesServer.sendRequestedFile(req, res);
 }
-
+const date = require('date-and-time');
+function getTime() {
+    return date.format(new Date(), 'YYYY MMMM DD - HH:mm:ss');
+}
 routeConfig();
 
 const server = require('http').createServer(async (req, res) => {
-    setRequestProcessStartTime();
-    console.log('<--------------------------------------------------------');
-    ShowRequestInfo(req);
+
+    let hideRequestInfo = false;
+    if (Hide_HEAD_Request) {
+        hideRequestInfo = req.method == "HEAD";
+    }
+    if (!hideRequestInfo) {
+        setRequestProcessStartTime();
+        ShowRequestInfo(req);
+    }
 
     AccessControlConfig(res);
     ////////////////////////////////////////////////////////////////////////
@@ -95,24 +105,28 @@ const server = require('http').createServer(async (req, res) => {
                 if (!(await token_Endpoint(req, res)))
                     if (!(await registered_Enpoint(req, res)))
                         if (!(await API_Endpoint(req, res)))
-                                responseNotFound(res);
+                            responseNotFound(res);
 
     ////////////////////////////////////////////////////////////////////////   
 
-    showRequestProcessTime();
-    showMemoryUsage();
+    if (!hideRequestInfo) {
+        showRequestProcessTime();
+        showMemoryUsage();
+    }
 });
 
+
+
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () =>{
-     console.log("**********************************");
-     console.log("* API SERVER - version 2.11      *");
-     console.log("**********************************");
-     console.log("* Author: Nicolas Chourot        *");
-     console.log("* Lionel-Groulx College          *");
-     console.log("* Release date: november 13 2021 *");
-     console.log("**********************************");
-     console.log(`HTTP Server running on port ${PORT}...`);
-    });
+server.listen(PORT, () => {
+    console.log("**********************************");
+    console.log("* API SERVER - version 2.11      *");
+    console.log("**********************************");
+    console.log("* Author: Nicolas Chourot        *");
+    console.log("* Lionel-Groulx College          *");
+    console.log("* Release date: november 13 2021 *");
+    console.log("**********************************");
+    console.log(`HTTP Server running on port ${PORT}...`);
+});
 showMemoryUsage();
 
