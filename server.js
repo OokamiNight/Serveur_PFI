@@ -1,10 +1,7 @@
-
-const Hide_HEAD_Request = true;
 function ShowRequestInfo(req) {
     console.log('<-------------------------', getTime(), '-------------------------');
     console.log(`Request --> [${req.method}::${req.url}]`);
 }
-
 function API_Endpoint(req, res) {
     return require('./router').dispatch_API_EndPoint(req, res);
 }
@@ -22,12 +19,10 @@ function routeConfig() {
     RouteRegister.add('PUT', 'accounts', 'change');
     RouteRegister.add('DELETE', 'accounts', 'remove');
 }
-
 function responseNotFound(res) {
     res.writeHead(404, { 'content-type': 'text/plain' });
     res.end();
 }
-
 let requestProcessStartTime = null;
 function setRequestProcessStartTime() {
     requestProcessStartTime = process.hrtime();
@@ -36,7 +31,6 @@ function showRequestProcessTime() {
     let requestProcessEndTime = process.hrtime(requestProcessStartTime);
     console.log("Response time: ", Math.round((requestProcessEndTime[0] * 1000 + requestProcessEndTime[1] / 1000000) / 1000 * 10000) / 10000, "seconds");
 }
-
 function showMemoryUsage() {
     const used = process.memoryUsage();
     console.log("RSet size:", Math.round(used.rss / 1024 / 1024 * 100) / 100, "Mb |",
@@ -83,7 +77,7 @@ function getTime() {
     return date.format(new Date(), 'YYYY MMMM DD - HH:mm:ss');
 }
 routeConfig();
-
+const Hide_HEAD_Request = true;
 const server = require('http').createServer(async (req, res) => {
 
     let hideRequestInfo = false;
@@ -114,9 +108,6 @@ const server = require('http').createServer(async (req, res) => {
         showMemoryUsage();
     }
 });
-
-
-
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
     console.log("**********************************");
@@ -127,6 +118,8 @@ server.listen(PORT, () => {
     console.log("* Release date: november 13 2021 *");
     console.log("**********************************");
     console.log(`HTTP Server running on port ${PORT}...`);
+    if (Hide_HEAD_Request)
+     console.log("Warning! HEAD requests are hidden.")
 });
 showMemoryUsage();
 
