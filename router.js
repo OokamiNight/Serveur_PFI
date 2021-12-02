@@ -207,12 +207,7 @@ exports.dispatch_API_EndPoint = function (req, res) {
                             }
                             // request consumed
                             resolve(true);
-                        }
-                        if (req.method === 'PATCH') {
-                            processJSONBody(req, res, controller, "patch");
-                            // request consumed
-                            resolve(true);
-                        }
+                        }                       
                         if (req.method === 'DELETE') {
                             controller.remove(id);
                             // request consumed
