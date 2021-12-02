@@ -69,10 +69,10 @@ module.exports =
                         if (!this.valueMatch(item[key.name], key.value))
                             return false;
                     } else {
-                        let oneMatch = false;
+                        let oneMatch = true;
                         for(let value of key.value) {
-                            if (this.valueMatch(item[key.name],value))
-                                oneMatch = true;
+                            if (!this.valueMatch(item[key.name],value))
+                                oneMatch = false;
                         }
                         return oneMatch;
                     }
