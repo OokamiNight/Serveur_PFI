@@ -71,9 +71,6 @@ module.exports =
         put(obj) {
             this.response.notImplemented();
         }
-        patch(obj) {
-            this.response.notImplemented();
-        }
         remove(id) {
             this.response.notImplemented();
         }
