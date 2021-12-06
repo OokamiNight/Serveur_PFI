@@ -1,29 +1,6 @@
 const utilities = require('./utilities.js');
 const Response = require('./response.js');
-/*
-// this function extract the JSON data from the body of the request
-// and and pass it to controller Method
-// if an error occurs it will send an error response
-function processJSONBody_old(req, res, controller, methodName) {
-    let response = new Response(res);
-    let body = [];
-    req.on('data', chunk => {
-        body.push(chunk);
-    }).on('end', () => {
-        try {
-            // we assume that the data is in JSON format
-            if (req.headers['content-type'] === "application/json") {
-                controller[methodName](JSON.parse(body));
-            }
-            else
-                response.unsupported();
-        } catch (error) {
-            console.log(error);
-            response.unprocessable();
-        }
-    });
-}
-*/
+
 function isJSONContent(req, res) {
     if (req.headers['content-type'] !== "application/json") {
         let response = new Response(res);
