@@ -65,8 +65,17 @@ module.exports =
         itemMatch(item) {
             for (let key of this.searchKeys) {
                 if (key.name in item) {
-                    if (!this.valueMatch(item[key.name], key.value))
-                        return false;
+                    if (!Array.isArray(key.value)){
+                        if (!this.valueMatch(item[key.name], key.value))
+                            return false;
+                    } else {
+                        let allMatch = true;
+                        for(let value of key.value) {
+                            if (!this.valueMatch(item[key.name],value))
+                                allMatch = false;
+                        }
+                        return allMatch;
+                    }
                 } else
                     return false;
             }
