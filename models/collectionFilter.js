@@ -51,12 +51,11 @@ module.exports =
                 this.sortFields.push(this.makeSortField(fieldNames));
         }
         addSearchKey(keyName, value) {
-            let name = utilities.capitalizeFirstLetter(keyName.toLowerCase());
-            this.searchKeys.push({ name: name, value: value });
+            this.searchKeys.push({ name: keyName, value: value });
         }
         valueMatch(value, searchValue) {
             try {
-                return new RegExp('^' + searchValue.toLowerCase().replace(/\*/g, '.*') + '$').test(value.toLowerCase());
+                return new RegExp('^' + searchValue.toLowerCase().replace(/\*/g, '.*') + '$').test(value.toString().toLowerCase());
             } catch (error) {
                 console.log(error);
                 return false;
