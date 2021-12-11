@@ -6,12 +6,10 @@ module.exports =
             super(req, res, params, false /* needAuthorization */);
             this.newsRepository = new NewsRepository(req);
         }
-        /*à modifier -> implanter l'autorisation requestActionAuthorized  */
         head() {
             this.response.JSON(null, this.newsRepository.ETag);
         }
         get(id) {
-
             if (this.params === null) {
                 if (!isNaN(id)) {
                     this.response.JSON(this.newsRepository.get(id));
