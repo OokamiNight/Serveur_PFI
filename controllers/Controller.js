@@ -16,7 +16,7 @@ module.exports =
                 this.res = res;
                 this.response = new Response(res, this.req.url);
                 this.params = params;
-                // if true, will require a valid bearer token from request header
+                // if true, will require a valid bearer token from request header
                 this.needAuthorization = needAuthorization;
             }
         }

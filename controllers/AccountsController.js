@@ -1,5 +1,6 @@
 const usersRepository = require('../models/usersRepository');
 const ImagesRepository = require('../models/imagesRepository');
+const NewsRepository = require('../models/newsRepository');
 const TokenManager = require('../tokenManager');
 const utilities = require("../utilities");
 const User = require('../models/user');
@@ -129,11 +130,25 @@ module.exports =
             imagesRepository.removeByIndex(indexToDelete);
             Cache.clear('images');
         }
+        deleteAllUsersNews(userId) {
+            let newsRepository = new NewsRepository(this.req, true);
+            let news = newsRepository.getAll();
+            let indexToDelete = [];
+            let index = 0;
+            for (let currentNew of news) {
+                if (currentNew.UserId == userId)
+                    indexToDelete.push(index);
+                index++;
+            }
+            newsRepository.removeByIndex(indexToDelete);
+            Cache.clear('news');
+        }
 
         remove(id) {
             if (this.requestActionAuthorized()) {
                 this.deleteAllUsersBookmarks(id);
                 this.deleteAllUsersImages(id);
+                this.deleteAllUsersNews(id);
                 if (this.usersRepository.remove(id))
                     this.response.accepted();
                 else

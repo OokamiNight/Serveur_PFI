@@ -50,6 +50,7 @@ module.exports =
             } else
                 this.sortFields.push(this.makeSortField(fieldNames));
         }
+        
         addSearchKey(keyName, value) {
             this.searchKeys.push({ name: keyName, value: value });
         }
@@ -61,6 +62,7 @@ module.exports =
                 return false;
             }
         }
+        
         itemMatch(item) {
             for (let key of this.searchKeys) {
                 if (key.name in item) {
