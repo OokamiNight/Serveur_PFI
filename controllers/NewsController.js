@@ -6,30 +6,28 @@ module.exports =
             super(req, res, params, false /* needAuthorization */);
             this.newsRepository = new NewsRepository(req);
         }
-/*à modifier -> implanter l'autorisation requestActionAuthorized  */
+        /*à modifier -> implanter l'autorisation requestActionAuthorized  */
         head() {
             this.response.JSON(null, this.newsRepository.ETag);
         }
         get(id) {
-            //if (this.requestActionAuthorized()) {
-                if (this.params === null) { 
-                    if(!isNaN(id)) {
-                        this.response.JSON(this.newsRepository.get(id));
-                    }
-                    else  
-                        this.response.JSON( this.newsRepository.getAll(), 
-                                            this.newsRepository.ETag);
+
+            if (this.params === null) {
+                if (!isNaN(id)) {
+                    this.response.JSON(this.newsRepository.get(id));
                 }
-                else {
-                    if (Object.keys(this.params).length === 0) /* ? only */{
-                        this.queryStringHelp();
-                    } else {
-                        this.response.JSON( this.newsRepository.getAll(this.params), 
-                                            this.newsRepository.ETag);
-                    }
+                else
+                    this.response.JSON(this.newsRepository.getAll(),
+                        this.newsRepository.ETag);
+            }
+            else {
+                if (Object.keys(this.params).length === 0) /* ? only */ {
+                    this.queryStringHelp();
+                } else {
+                    this.response.JSON(this.newsRepository.getAll(this.params),
+                        this.newsRepository.ETag);
                 }
-            //} else
-                //this.response.unAuthorized();
+            }
         }
         post(news) {
             if (this.requestActionAuthorized()) {
