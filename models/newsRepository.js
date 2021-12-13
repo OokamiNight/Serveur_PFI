@@ -17,13 +17,20 @@ class NewsRepository extends Repository {
 
             let user = this.users.get(news.UserID); 
             let username = "unknown";
-            if (user !== null)
+            if (user !== null){
                 username = user.Name;
+                if (user["AvatarGUID"] != ""){
+                  bindedNews["AvatarGUID"] = "http://" + this.req.headers["host"] + ImageFilesRepository.getImageFileURL(user["AvatarGUID"]);
+                }
+                else{
+                  bindedNews["AvatarGUID"] = "";
+                }
+            }
+                
             bindedNews["Username"] = username;
             
-            if (user["AvatarGUID"] != "")
-                bindedNews["AvatarURL"] = "http://" + this.req.headers["host"] + ImageFilesRepository.getImageFileURL(user["AvatarGUID"]);
-
+            
+              
             if (news["GUID"] != ""){
                 bindedNews["OriginalURL"] = "http://" + this.req.headers["host"] + ImageFilesRepository.getImageFileURL(news["GUID"]);
                 bindedNews["ThumbnailURL"] = "http://" + this.req.headers["host"] + ImageFilesRepository.getThumbnailFileURL(news["GUID"]);
