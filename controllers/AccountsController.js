@@ -136,7 +136,7 @@ module.exports =
             let indexToDelete = [];
             let index = 0;
             for (let currentNew of news) {
-                if (currentNew.UserId == userId)
+                if (currentNew.UserID == userId)
                     indexToDelete.push(index);
                 index++;
             }
